@@ -1,17 +1,107 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_three"
-        android:layout_width="wrap_content"
+    <TableLayout
+        android:id="@+id/table_heading_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Stats Fragment"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow>
+
+            <TextView
+                style="@style/table_header"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:text="Player"/>
+
+            <TextView
+                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_column="1"
+                android:layout_weight="1"
+                android:text="PPG"
+                style="@style/table_header"
+                android:paddingEnd="5dp"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_column="2"
+                android:layout_weight="1"
+                android:text="APG"
+                style="@style/table_header"
+                android:paddingEnd="5dp"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_column="2"
+                android:layout_weight="1"
+                android:text="RPG"
+                style="@style/table_header"
+                android:paddingEnd="5dp"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_column="1"
+                android:layout_weight="1"
+                android:text="SPG"
+                style="@style/table_header"
+                android:paddingEnd="5dp"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_column="2"
+                android:layout_weight="1"
+                android:text="BPG"
+                style="@style/table_header"
+                android:paddingEnd="5dp"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"/>
+        </TableRow>
+    </TableLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/table_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/table_heading_layout">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

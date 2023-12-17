@@ -7,20 +7,20 @@
     android:background="@drawable/border_background">
 
     <TextView
-        android:id="@+id/txt_name_team"
+        android:id="@+id/txt_name_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Team Name"
+        android:text="Event Name"
         android:singleLine="true"
         android:textStyle="bold"
         android:textSize="14sp"
         android:padding="8dp" />
 
     <TextView
-        android:id="@+id/txt_name_city"
+        android:id="@+id/txt_event_year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Team Name"
+        android:text="Event Year"
         android:singleLine="true"
         android:textStyle="bold"
         android:textSize="14sp"

@@ -11,39 +11,31 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.determinemostimprovebasketballplayer.player.Player
 import com.example.determinemostimprovebasketballplayer.player.PlayersAdapter
+import com.example.determinemostimprovebasketballplayer.team.DataTeam
+import com.example.determinemostimprovebasketballplayer.team.TeamAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.json.JSONException
 import org.json.JSONObject
 
-class DetailTeamActivity : AppCompatActivity() {
+class TeamActivity : AppCompatActivity() {
 
-    var players: ArrayList<Player> = ArrayList()
+    var teams: ArrayList<DataTeam> = ArrayList()
     private var recycler: RecyclerView? = null
-    private val adapter = PlayersAdapter()
+    private val adapter = TeamAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_team)
+        setContentView(R.layout.activity_team)
 
         val teamId = intent.getStringExtra("TEAM_ID")
 
         fetchData(teamId)
 
-        // Cari FAB berdasarkan ID
-        val fabButton: FloatingActionButton = this.findViewById(R.id.fab_add_player)
-
-        // Set listener untuk FAB
-        fabButton.setOnClickListener {
-            // Ketika FAB ditekan, buka AddTeamActivity
-            val intent = Intent(this, AddPlayerActivity::class.java)
-            intent.putExtra("TEAM_ID", teamId)
-            startActivity(intent)
-        }
     }
 
     private fun fetchData(teamId: String?) {
         val queue = Volley.newRequestQueue(this)
-        val url = "http://192.168.126.86/ta_160419129/get_pemain.php"
+        val url = "http://192.168.126.86/ta_160419129/get_team.php"
 
         val stringRequest = object : StringRequest(
             Method.POST, url,
@@ -56,14 +48,12 @@ class DetailTeamActivity : AppCompatActivity() {
 
                         for (i in 0 until data.length()) {
                             val playObj = data.getJSONObject(i)
-                            val player = Player(
-                                id = playObj.getString("id"),
-                                nama = playObj.getString("nama"),
-                                umur = playObj.getString("umur"),
-                                tinggi = playObj.getString("tinggi"),
-                                berat = playObj.getString("berat")
+                            val player = DataTeam(
+                                playObj.getString("id"),
+                                playObj.getString("nama"),
+                                playObj.getString("kota")
                             )
-                            players.add(player)
+                            teams.add(player)
                         }
 
                         recycler = findViewById(R.id.recycler_players)
@@ -71,9 +61,9 @@ class DetailTeamActivity : AppCompatActivity() {
                         recycler?.layoutManager = LinearLayoutManager(this)
                         recycler?.adapter = adapter
 
-                        adapter.updateData(players)
+                        adapter.updateData(teams)
 
-                        Log.d("cekisiarray", players.toString())
+                        Log.d("cekisiarray", teams.toString())
                     }
                 } catch (e: JSONException) {
                     e.printStackTrace()

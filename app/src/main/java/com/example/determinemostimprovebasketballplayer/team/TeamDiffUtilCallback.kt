@@ -1,8 +1,8 @@
-package com.example.determinemostimprovebasketballplayer
+package com.example.determinemostimprovebasketballplayer.team
 
 import androidx.recyclerview.widget.DiffUtil
 
-class RecyclerDiffUtilCallback : DiffUtil.ItemCallback<DataTeam>() {
+class TeamDiffUtilCallback : DiffUtil.ItemCallback<DataTeam>() {
     override fun areItemsTheSame(oldItem: DataTeam, newItem: DataTeam): Boolean {
         return oldItem == newItem
     }

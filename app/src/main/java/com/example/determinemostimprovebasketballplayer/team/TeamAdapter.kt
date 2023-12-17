@@ -1,21 +1,18 @@
-package layout
+package com.example.determinemostimprovebasketballplayer.team
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.example.determinemostimprovebasketballplayer.DataTeam
 import com.example.determinemostimprovebasketballplayer.R
-import com.example.determinemostimprovebasketballplayer.RecyclerDiffUtilCallback
-import com.example.determinemostimprovebasketballplayer.RecyclerViewHolder
 
-class CustomAdapter: RecyclerView.Adapter<RecyclerViewHolder>() {
+class TeamAdapter: RecyclerView.Adapter<TeamViewHolder>() {
 
-    private val differ = AsyncListDiffer(this, RecyclerDiffUtilCallback())
+    private val differ = AsyncListDiffer(this, TeamDiffUtilCallback())
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
-        return RecyclerViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
+        return TeamViewHolder(
             itemView = LayoutInflater.from(parent.context).inflate(
                 R.layout.item_team_layout,
                 parent,
@@ -28,7 +25,7 @@ class CustomAdapter: RecyclerView.Adapter<RecyclerViewHolder>() {
         return differ.currentList.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
         holder.bindData(differ.currentList[position])
 
     }

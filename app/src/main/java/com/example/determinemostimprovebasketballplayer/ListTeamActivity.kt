@@ -9,41 +9,40 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.determinemostimprovebasketballplayer.player.Player
-import com.example.determinemostimprovebasketballplayer.player.PlayersAdapter
+import com.example.determinemostimprovebasketballplayer.team.DataTeam
+import com.example.determinemostimprovebasketballplayer.team.TeamAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.json.JSONException
 import org.json.JSONObject
 
-class DetailTeamActivity : AppCompatActivity() {
-
-    var players: ArrayList<Player> = ArrayList()
+class ListTeamActivity : AppCompatActivity() {
+    var teams: ArrayList<DataTeam> = ArrayList()
     private var recycler: RecyclerView? = null
-    private val adapter = PlayersAdapter()
+    private val adapter = TeamAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_team)
+        setContentView(R.layout.activity_list_team)
 
-        val teamId = intent.getStringExtra("TEAM_ID")
+        val eventId = intent.getStringExtra("EVENT_ID")
 
-        fetchData(teamId)
+        fetchData(eventId)
 
         // Cari FAB berdasarkan ID
-        val fabButton: FloatingActionButton = this.findViewById(R.id.fab_add_player)
+        val fabButton: FloatingActionButton = this.findViewById(R.id.fab_add_team)
 
         // Set listener untuk FAB
         fabButton.setOnClickListener {
             // Ketika FAB ditekan, buka AddTeamActivity
-            val intent = Intent(this, AddPlayerActivity::class.java)
-            intent.putExtra("TEAM_ID", teamId)
+            val intent = Intent(this, AddTeamActivity::class.java)
+            intent.putExtra("EVENT_ID", eventId)
             startActivity(intent)
         }
     }
 
-    private fun fetchData(teamId: String?) {
+    private fun fetchData(eventId: String?) {
         val queue = Volley.newRequestQueue(this)
-        val url = "http://192.168.126.86/ta_160419129/get_pemain.php"
+        val url = "http://192.168.126.86/ta_160419129/get_team.php"
 
         val stringRequest = object : StringRequest(
             Method.POST, url,
@@ -56,24 +55,22 @@ class DetailTeamActivity : AppCompatActivity() {
 
                         for (i in 0 until data.length()) {
                             val playObj = data.getJSONObject(i)
-                            val player = Player(
-                                id = playObj.getString("id"),
-                                nama = playObj.getString("nama"),
-                                umur = playObj.getString("umur"),
-                                tinggi = playObj.getString("tinggi"),
-                                berat = playObj.getString("berat")
+                            val team = DataTeam(
+                                id_team = playObj.getString("id"),
+                                name_team = playObj.getString("nama"),
+                                kota_team = playObj.getString("kota"),
                             )
-                            players.add(player)
+                            teams.add(team)
                         }
 
-                        recycler = findViewById(R.id.recycler_players)
+                        recycler = findViewById(R.id.recycler_teams)
 
                         recycler?.layoutManager = LinearLayoutManager(this)
                         recycler?.adapter = adapter
 
-                        adapter.updateData(players)
+                        adapter.updateData(teams)
 
-                        Log.d("cekisiarray", players.toString())
+                        Log.d("cekisiarray", teams.toString())
                     }
                 } catch (e: JSONException) {
                     e.printStackTrace()
@@ -85,7 +82,7 @@ class DetailTeamActivity : AppCompatActivity() {
 
             override fun getParams(): Map<String, String> {
                 val params = HashMap<String, String>()
-                teamId?.let { params["id"] = it }
+                eventId?.let { params["id"] = it }
                 return params
             }
         }
