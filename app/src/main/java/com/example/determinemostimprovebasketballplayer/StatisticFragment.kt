@@ -59,7 +59,8 @@ class StatisticFragment : Fragment() {
                             rpg = playObj.getString("rpg").toFloat(),
                             spg = playObj.getString("spg").toFloat(),
                             bpg = playObj.getString("bpg").toFloat(),
-                            name_player = playObj.getString("name_player")
+                            name_player = playObj.getString("name_player"),
+                            event_year = playObj.getString("event_yer").toInt()
                         )
                         statistics.add(statistic)
                         Log.d("masuk", it)

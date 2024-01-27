@@ -8,4 +8,5 @@ data class Statistic(
     val spg: Float,
     val bpg: Float,
     val name_player: String,
+    val event_year: Int
 )
