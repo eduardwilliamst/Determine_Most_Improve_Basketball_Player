@@ -33,7 +33,7 @@ class AhpActivity : AppCompatActivity() {
 
     private fun fetchDataAndPopulateUI() {
         val q = Volley.newRequestQueue(this)
-        val url = "http://192.168.100.79/ta_160419129/get_statistik.php"
+        val url = "http://192.168.1.86/ta_160419129/get_statistik.php"
         var stringRequest = StringRequest(
             Request.Method.POST, url,
             Response.Listener<String> {
@@ -41,7 +41,7 @@ class AhpActivity : AppCompatActivity() {
                 val obj = JSONObject(it)
                 if (obj.getString("result") == "OK") {
                     val data = obj.getJSONArray("data")
-
+                    Log.d("statistik", it)
                     for (i in 0 until data.length()) {
                         val playObj = data.getJSONObject(i)
                         val statistic = Statistic(

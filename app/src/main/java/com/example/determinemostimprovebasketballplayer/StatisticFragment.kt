@@ -50,7 +50,7 @@ class StatisticFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_statistic, container, false)
 
         val q = Volley.newRequestQueue(activity)
-        val url = "http://192.168.126.86/ta_160419129/list_statistik.php"
+        val url = "http://192.168.1.86/ta_160419129/list_statistik.php"
         var stringRequest = StringRequest(
             Request.Method.POST, url,
             Response.Listener<String> {
@@ -69,7 +69,7 @@ class StatisticFragment : Fragment() {
                             spg = playObj.getString("spg").toFloat(),
                             bpg = playObj.getString("bpg").toFloat(),
                             name_player = playObj.getString("name_player"),
-                            event_year = playObj.getString("event_yer").toInt()
+                            event_year = playObj.getString("event_year").toInt(),
                         )
                         statistics.add(statistic)
                         Log.d("masuk", it)

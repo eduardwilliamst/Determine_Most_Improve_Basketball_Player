@@ -3,27 +3,26 @@ package com.example.determinemostimprovebasketballplayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.determinemostimprovebasketballplayer.statistic.Statistic
 import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.StringReader
-import kotlin.streams.toList
 
 class ProfileMatchingActivity : AppCompatActivity() {
 
-
     private val statistics = mutableListOf<Statistic>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_matching)
+        fetchDataAndPopulateUI()
     }
 
     private fun fetchDataAndPopulateUI() {
+        // ... (implementasi sebelumnya)
+
         val q = Volley.newRequestQueue(this)
         val url = "http://192.168.18.94/ta_160419129/list_statistik.php"
         var stringRequest = StringRequest(
@@ -46,7 +45,7 @@ class ProfileMatchingActivity : AppCompatActivity() {
                             spg = playObj.getString("spg").toFloat(),
                             bpg = playObj.getString("bpg").toFloat(),
                             name_player = playObj.getString("name_player"),
-                            event_year = playObj.getString("event_yer").toInt()
+                            event_year = playObj.getString("event_year").toInt()
                         )
                         statistics.add(statistic)
                         Log.d("masuk", it)
@@ -62,52 +61,99 @@ class ProfileMatchingActivity : AppCompatActivity() {
     }
 
     private fun calculateProfileMatching() {
+        val profileMatching = ProfileMatching()
 
-//        val result = performProfileMatching(statistics)
-//        Log.d("ProfileMatchingResult", result)
-//
-//        val resultTextView: TextView = findViewById(R.id.textViewResultPM)
-//        resultTextView.text = result
-    }
-
-    private fun performProfileMatching(data: String): String {
-        // Baca data dari string
-        val reader = BufferedReader(StringReader(data))
-        val lines = reader.lines().toList()
-
-        // Ambil nama pemain sebagai kunci
-        val playerNames = lines.drop(1).map { it.split(",")[6] }
-
-        // Hitung nilai total untuk setiap pemain (implementasi sederhana)
-        val playerTotalScores = mutableMapOf<String, Double>()
-
-        lines.drop(1).forEach { line ->
-            val values = line.split(",")
-            val playerName = values[6]
-            val ppg = values[1].toDouble()
-            val apg = values[2].toDouble()
-            val rpg = values[3].toDouble()
-            val spg = values[4].toDouble()
-            val bpg = values[5].toDouble()
-
-            // Hitung nilai total sederhana (contoh bobot yang sama untuk setiap kriteria)
-            val totalScore = (ppg + apg + rpg + spg + bpg) / 5.0
-
-            // Tambahkan atau update nilai total untuk pemain
-            playerTotalScores[playerName] = totalScore
+        // Tambahkan data pemain untuk musim 2021
+        statistics.filter { it.event_year == 2021 }.forEach {
+            profileMatching.addStatistic(
+                Statistic(
+                    id = it.id,
+                    name_player = it.name_player,
+                    ppg = it.ppg,
+                    apg = it.apg,
+                    rpg = it.rpg,
+                    spg = it.spg,
+                    bpg = it.bpg,
+                    event_year = it.event_year,
+                )
+            )
         }
 
-        // Urutkan pemain berdasarkan nilai total (descending)
-        val sortedPlayers = playerTotalScores.toList().sortedByDescending { it.second }
-
-        // Format hasil
-        val resultStringBuilder = StringBuilder()
-        resultStringBuilder.append("Hasil Profile Matching:\n")
-
-        sortedPlayers.forEachIndexed { index, (player, totalScore) ->
-            resultStringBuilder.append("${index + 1}. $player - Nilai Total: $totalScore\n")
+        // Tambahkan data pemain untuk musim 2022
+        statistics.filter { it.event_year == 2022 }.forEach {
+            profileMatching.addStatistic(
+                Statistic(
+                    id = it.id,
+                    name_player = it.name_player,
+                    ppg = it.ppg,
+                    apg = it.apg,
+                    rpg = it.rpg,
+                    spg = it.spg,
+                    bpg = it.bpg,
+                    event_year = it.event_year,
+                )
+            )
         }
 
-        return resultStringBuilder.toString()
+        // Hitung nilai gap
+        val gapMatrix = profileMatching.calculateGap()
+
+        // Konversi nilai gap ke bobot
+        val weightedGapMatrix = profileMatching.convertToWeightedGap(gapMatrix)
+
+        // Print hasil konversi (atau sesuaikan dengan tampilan UI Anda)
+        for (i in weightedGapMatrix.indices) {
+            Log.d("Nilai dikonversikan", "${i + 1} ${profileMatching.statistics[i].name_player}")
+            for (j in weightedGapMatrix[i].indices) {
+                Log.d("Nilai dikonversikan", "${weightedGapMatrix[i][j]} ")
+            }
+        }
+
+        // Hitung core factor dan secondary factor
+        val coreFactorMap = profileMatching.calculateCoreFactor()
+        val secondaryFactorMap = profileMatching.calculateSecondaryFactor()
+
+        // Calculate Total Score
+        val totalScoreMap = mutableMapOf<String, Map<String, Double>>()
+
+        for (player in statistics) {
+            val coreFactorValue = coreFactorMap[player.name_player] ?: 0.0
+            val secondaryFactorValue = secondaryFactorMap[player.name_player] ?: 0.0
+
+            val totalScore = mapOf(
+                "PPG" to (0.6 * coreFactorValue + 0.4 * secondaryFactorValue),
+                "APG" to (0.6 * coreFactorValue + 0.4 * secondaryFactorValue),
+                "RPG" to (0.6 * coreFactorValue + 0.4 * secondaryFactorValue),
+                "SPG" to (0.6 * coreFactorValue + 0.4 * secondaryFactorValue),
+                "BPG" to (0.6 * coreFactorValue + 0.4 * secondaryFactorValue)
+            )
+
+            totalScoreMap[player.name_player] = totalScore
+        }
+
+        // Print or use the Total Score results (adjust as needed)
+        for ((player, scores) in totalScoreMap) {
+            Log.d("Total Score", "$player: PPG(${scores["PPG"]}), APG(${scores["APG"]}), RPG(${scores["RPG"]}), SPG(${scores["SPG"]}), BPG(${scores["BPG"]})")
+        }
+
+        // Calculate Ranking
+        val rankingMap = mutableMapOf<String, Double>()
+
+        for (player in statistics) {
+            val ranking = (
+                    0.4 * (totalScoreMap[player.name_player]?.get("PPG") ?: 0.0) +
+                            0.25 * (totalScoreMap[player.name_player]?.get("APG") ?: 0.0) +
+                            0.15 * (totalScoreMap[player.name_player]?.get("RPG") ?: 0.0) +
+                            0.1 * (totalScoreMap[player.name_player]?.get("SPG") ?: 0.0) +
+                            0.1 * (totalScoreMap[player.name_player]?.get("BPG") ?: 0.0)
+                    )
+
+            rankingMap[player.name_player] = ranking
+        }
+
+        // Print or use the Ranking results (adjust as needed)
+        for ((player, ranking) in rankingMap) {
+            Log.d("Ranking", "$player: $ranking")
+        }
     }
 }
