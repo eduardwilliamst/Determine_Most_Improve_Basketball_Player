@@ -12,9 +12,7 @@ class ProfileMatching {
         arrayOf(0.0, 6.0)
     )
 
-    private val bobotNilai = arrayOf(
-        5.0, 4.5, 4.0, 3.5, 3.0, 2.5, 2.0, 1.5, 1.0
-    )
+    private val bobotNilai = arrayOf(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
 
     val statistics = mutableListOf<Statistic>()
 
@@ -60,9 +58,17 @@ class ProfileMatching {
     }
 
     private fun getWeightedGapValue(index1: Int, index2: Int): Double {
-        val selisih = calculateIndividualGap(statistics[index1], statistics[index2])
-        return if (selisih > 0) bobotNilai[selisih - 1] else 0.0
+        val individualGap = calculateIndividualGap(statistics[index1], statistics[index2])
+
+        // If the individualGap is 0, return 0.0 to avoid division by zero
+        return if (individualGap > 0 && individualGap <= bobotNilai.size) {
+            bobotNilai[individualGap - 1]
+        } else {
+            0.0
+        }
     }
+
+
 
     fun convertToWeightedGap(gapMatrix: Array<Array<Int>>): Array<Array<Double>> {
         val weightedGapMatrix = Array(gapMatrix.size) { Array(gapMatrix.size) { 0.0 } }
@@ -74,7 +80,6 @@ class ProfileMatching {
                 }
             }
         }
-
         return weightedGapMatrix
     }
 
