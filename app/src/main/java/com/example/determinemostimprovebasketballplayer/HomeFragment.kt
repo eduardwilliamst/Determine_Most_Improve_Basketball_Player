@@ -29,14 +29,14 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Cari FAB berdasarkan ID
-        val fabButton: FloatingActionButton = view.findViewById(R.id.fab_add_event)
+//        val fabButton: FloatingActionButton = view.findViewById(R.id.fab_add_event)
 
         // Set listener untuk FAB
-        fabButton.setOnClickListener {
-            // Ketika FAB ditekan, buka AddTeamActivity
-            val intent = Intent(activity, AddEventActivity::class.java)
-            startActivity(intent)
-        }
+//        fabButton.setOnClickListener {
+//            // Ketika FAB ditekan, buka AddTeamActivity
+//            val intent = Intent(activity, AddEventActivity::class.java)
+//            startActivity(intent)
+//        }
     }
 
     override fun onCreateView(

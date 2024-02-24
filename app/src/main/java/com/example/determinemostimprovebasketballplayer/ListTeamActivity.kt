@@ -29,15 +29,15 @@ class ListTeamActivity : AppCompatActivity() {
         fetchData(eventId)
 
         // Cari FAB berdasarkan ID
-        val fabButton: FloatingActionButton = this.findViewById(R.id.fab_add_team)
+//        val fabButton: FloatingActionButton = this.findViewById(R.id.fab_add_team)
 
         // Set listener untuk FAB
-        fabButton.setOnClickListener {
-            // Ketika FAB ditekan, buka AddTeamActivity
-            val intent = Intent(this, AddTeamActivity::class.java)
-            intent.putExtra("EVENT_ID", eventId)
-            startActivity(intent)
-        }
+//        fabButton.setOnClickListener {
+//            // Ketika FAB ditekan, buka AddTeamActivity
+//            val intent = Intent(this, AddTeamActivity::class.java)
+//            intent.putExtra("EVENT_ID", eventId)
+//            startActivity(intent)
+//        }
     }
 
     private fun fetchData(eventId: String?) {

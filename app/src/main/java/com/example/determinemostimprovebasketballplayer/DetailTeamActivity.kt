@@ -30,15 +30,15 @@ class DetailTeamActivity : AppCompatActivity() {
         fetchData(teamId)
 
         // Cari FAB berdasarkan ID
-        val fabButton: FloatingActionButton = this.findViewById(R.id.fab_add_player)
+//        val fabButton: FloatingActionButton = this.findViewById(R.id.fab_add_player)
 
         // Set listener untuk FAB
-        fabButton.setOnClickListener {
-            // Ketika FAB ditekan, buka AddTeamActivity
-            val intent = Intent(this, AddPlayerActivity::class.java)
-            intent.putExtra("TEAM_ID", teamId)
-            startActivity(intent)
-        }
+//        fabButton.setOnClickListener {
+//            // Ketika FAB ditekan, buka AddTeamActivity
+//            val intent = Intent(this, AddPlayerActivity::class.java)
+//            intent.putExtra("TEAM_ID", teamId)
+//            startActivity(intent)
+//        }
     }
 
     private fun fetchData(teamId: String?) {
